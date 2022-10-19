@@ -2,6 +2,7 @@ import './App.css';
 import Demo from './components/demo_component';
 import D2 from './components/demo2';
 import D3 from './components/demo3post';
+import InputField from "./components/InputField";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           Learn React
         </a>
       </header>
+        <InputField label={"abc"}/>
       <Demo/>
       <D2/>
       <D3/>
