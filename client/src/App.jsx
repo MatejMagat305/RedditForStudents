@@ -3,6 +3,7 @@ import Demo from './components/demo_component';
 import D2 from './components/demo2';
 import D3 from './components/demo3post';
 import InputField from "./components/InputField";
+import ButtonKomlo from "./components/ButtonKomlo";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         </a>
       </header>
         <InputField label={"abc"}/>
+        <ButtonKomlo children={<p>abc</p>} type={'primary'}/>
       <Demo/>
       <D2/>
       <D3/>

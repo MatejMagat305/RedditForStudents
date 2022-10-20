@@ -13,32 +13,38 @@ function ButtonKomlo({
 
     const color = {
         primary: 'text-white',
-        secondary: 'text-slate-700 dark:text-slate-200',
+        secondary: 'text-blue-500',
     };
 
     const backgroundColors = {
         primary: 'bg-blue-500',
-        secondary: 'bg-transparent',
+        secondary: 'bg-white',
     };
 
     const border = {
-        primary: 'border-none',
-        secondary: 'border-2 border-gray-800 dark:border-white',
+        primary: 'border-2 border-blue-500 rounded',
+        secondary: 'border-2 border-blue-500 rounded',
     };
 
     const disabledStyle = disabled
         ? 'opacity-50 cursor-not-allowed'
-        : 'transition ease-in-out duration-300 hover:cursor-pointer';
+        : 'transition-all duration-200 ease-in-out hover:cursor-pointer font-bold';
+
+    const hoverStyle = {
+        primary: 'hover:bg-blue-700 hover:scale-110 hover:border-blue-700',
+        secondary: 'hover:bg-blue-500 hover:text-white hover:scale-110'
+    }
+
 
     let baseClasses = [
         'uppercase',
-        'font-oswald',
         textSize,
         border[type],
         backgroundColors[type],
         color[type],
         padding,
         disabledStyle,
+        hoverStyle[type]
     ];
 
     if (className) {
