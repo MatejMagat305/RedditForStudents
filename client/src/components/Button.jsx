@@ -1,4 +1,4 @@
-function ButtonKomlo({
+function Button({
      type = 'primary',      //or 'secondary'
      children,
      onClick,
@@ -61,4 +61,4 @@ function ButtonKomlo({
     )
 }
 
-export default ButtonKomlo;
+export default Button;
