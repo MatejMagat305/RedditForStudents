@@ -22,7 +22,6 @@ function App() {
           Learn React
         </a>
       </header>
-        <LoginPage/>
       <Demo/>
       <D2/>
       <D3/>
