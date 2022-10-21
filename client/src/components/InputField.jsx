@@ -1,7 +1,14 @@
 import {useRef} from "react";
 
-function InputField(props){
-    const {id, type, placeholder, value, label, ...rest} = props;
+function InputField({
+        id,
+        type = 'text',
+        placeholder,
+        value,
+        label,
+        onChange = (event) => {},
+        ...rest
+    }){
     const inputRef = useRef();
 
     return (
@@ -23,6 +30,8 @@ function InputField(props){
                 id={id}
                 placeholder={placeholder}
                 ref={inputRef}
+                value={value}
+                onChange={onChange}
                 {...rest}
             />
         </div>
