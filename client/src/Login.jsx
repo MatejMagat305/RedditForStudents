@@ -2,7 +2,7 @@ import InputField from "./components/InputField";
 import {useState} from "react";
 import Button from "./components/Button";
 
-function LoginPage(){
+function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -26,4 +26,4 @@ function LoginPage(){
     )
 }
 
-export default LoginPage;
+export default Login;

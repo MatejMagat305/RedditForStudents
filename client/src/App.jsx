@@ -4,7 +4,7 @@ import D2 from './components/demo2';
 import D3 from './components/demo3post';
 import InputField from "./components/InputField";
 import Button from "./components/Button";
-import LoginPage from "./LoginPage";
+import Login from "./Login";
 
 function App() {
   return (
