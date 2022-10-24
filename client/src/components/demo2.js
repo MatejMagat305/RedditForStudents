@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+
 function D2 () {
     const [fetchDataBackend, setfetchDataBackend] = useState([{}]);
     const [counter, setcounter] = useState(0);
+    
+    
+
     useEffect(() => {
         if(counter === 0){
             return;
         }
-        const req = fetch("./apidb");
-        req.then(res => res.json()).then(data => setfetchDataBackend(data)).catch(err => console.log(`ERRROR ${err}`))
+        const req = fetch("./apidb"); //apidb - aby ste videli rozdiel
+        req.then(res => res.json())
+        .then(data => setfetchDataBackend(data))
+        .catch(err => {
+            
+            console.log(`ERRROR ${err}`)
+        })
 
       
     }, [counter]);
