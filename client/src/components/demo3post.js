@@ -22,18 +22,18 @@ function D3 () {
         });
         req.then(res => res.json()).then(data => {
             if (counter > 5 ){
-                throw new Error("Maximal couter has been reacht");
+                throw new Error("Maximal counter has been reached");
             }
             setfetchDataBackend(data);
             setisError(true);
-            setistype('succes');
-            setisTitleError("Data has been retrived");
-            setiscontext("data has been retreved");
+            setistype('success');
+            setisTitleError("Data has been retrieved");
+            setiscontext("data has been retrieved");
         
         }).catch(err => {
             setisError(true);
             setistype('error');
-            setisTitleError("Something want WRONG!");
+            setisTitleError("Something went WRONG!");
             setiscontext(`${err}`);
             console.log(`ERRROR ${err}`)
         })

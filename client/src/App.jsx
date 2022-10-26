@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
 
-      <div class="relative">
+      <div className="relative">
         <div>
           <div>
             <img src="..." />
