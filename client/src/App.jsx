@@ -1,11 +1,7 @@
 import './App.css';
-import Demo from './components/demo_component';
-import D2 from './components/demo2';
-import D3 from './components/demo3post';
-import InputField from "./components/InputField";
-import Button from "./components/Button";
-import Allert from "./components/Allert";
-import Login from "./Login";
+import Demo from './demo/demo_component';
+import D2 from './demo/demo2';
+import D3 from './demo/demo3post';
 
 
 function App() {
@@ -25,7 +21,7 @@ function App() {
           </div>
         </div>
       </div>
-      {/* <Allert type={'error'} title={"this is error"} context={"some wird context etc,some wird context etcsome wird context etc,some wird context etcsome wird context etcsome wird context etcsome wird context etcsome wird context etc ,some wird context etc,some wird context etc,some wird context etc"}/> */}
+      {/* <Alert type={'error'} title={"this is error"} context={"some wird context etc,some wird context etcsome wird context etc,some wird context etcsome wird context etcsome wird context etcsome wird context etcsome wird context etc ,some wird context etc,some wird context etc,some wird context etc"}/> */}
       
       <header className="App-header">
         <p>

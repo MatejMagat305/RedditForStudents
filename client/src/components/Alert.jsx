@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-function Allert({
+function Alert({
      type = 'error',      //or 'success' , 'warning' , 'info'
      children,
      onClick,
@@ -70,4 +70,4 @@ function Allert({
     </div>
     )
 }
-export default Allert;
+export default Alert;
