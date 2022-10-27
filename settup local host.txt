@@ -25,3 +25,5 @@ odporucam VS-code Simple React Snippets alebo nieco obdobne
 odporucam VS-code HTML Snippets
 mozte sa pozriet na jednoduche componenty ktore su spojene uz spramo s pg4admin teda ak vsetko funguje mali by sa vam nacitat vami vygenerovani usery
 
+pokial vam aplikacia nefunguje aj po spraveni tichto krokov pouzite command
+npm install  v terminali v folderi */RedditForStudents/client
