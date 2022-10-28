@@ -1,12 +1,18 @@
 // Vytvorenie Express aplikacie
 const express = require("express");
+const {student} = require("./student/student");
 const app = express();
-app.use(express.json()) // req.body
+app.use(express.json());     // req.body
+student.initAppServices(app);
 
-// db 
-const DB = require("./db")
-const db = DB.getDbServiceInstance();
 
+
+
+
+
+
+
+/*
 // jednoducha api
 app.get("/api", (req,res) => {
     res.json({"skuska":"ano fungujem"})
@@ -14,7 +20,8 @@ app.get("/api", (req,res) => {
 
 app.get("/apidb", async (req,res) => {
     try {
-        const resoult = await db.get_test();
+        const query = `SELECT * from users`;
+        const resoult = await db.get_json_query(query);
         console.log(resoult)
         res.json(resoult);
     } catch (err) {
@@ -25,12 +32,15 @@ app.get("/apidb", async (req,res) => {
 app.post("/apidb2", async (req,res) => {
     try {
         const {maximum} = req.body;
-        const resoult = await db.get_test2(maximum);
+        const query = `SELECT * from users where id < $1`;
+        const resoult = await db.get_json_query_arguments(query, [maximum]);
         console.log(resoult)
         res.json(resoult);
     } catch (err) {
         console.log(err.massage);
     }
 } )
+
+ */
 const PORT = 5000; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
