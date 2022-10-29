@@ -16,8 +16,8 @@ class student {
         this.nick_name = "temp"
     }
     static initAppServices(app) {
+        app.post(studentLogin, preLogin());
         app.post(studentRegister, preRegistration((Object.keys(new student()))));
-        app.post(studentLogin, preLogin);
     }
 }
 

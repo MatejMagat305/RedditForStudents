@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const DB = require("../DB_main/db");
 const {studentSQL} = require("./sqlTable");
 const db = DB.getDbServiceInstance();
@@ -9,20 +9,22 @@ function preLogin(){
             const query = await studentSQL
                 .select(studentSQL.star())
                 .from(studentSQL)
-                .where(studentSQL.name.equals(body.name))
+                .where(studentSQL.nick_name.equals(body.nick_name))
                 .toQuery();
-            const row = await db.get_json_query(query)
-            if (row instanceof Error) {
-                res.status(500).send(row.toString());
+            const rows = await db.get_json_query(query);
+            if (rows instanceof Error) {
+                res.status(500).send(rows.toString());
                 return;
             }
-            if (!row.length) {
+            if (!rows.length) {
                 res.status(500).send("name not matches");
                 return;
             }
-            const validPassword = await bcrypt.compare(req.body.password, row.password);
-            if (validPassword) {
-                res(row);
+            const row = rows[0];
+            const hash = crypto.createHash('sha256').update(req.body.password).digest('hex').toString();
+            if (row.password===hash) {
+                delete row["password"];
+                res.status(200).json(row);
             } else {
                 res.status(500).send("password not matches");
             }

@@ -19,19 +19,8 @@ class DB {
 
     async get_json_query(query) {
         try {
-            return await pool.query(query, (err, results) => {
-                let result;
-                if (err!==undefined && err!==null) {
-                    result = new Error(err.toString());
-                    return result;
-                }
-                if (results!==null && results.rows!==undefined && results.rows!==null) {
-                    result = results.rows;
-                    return result;
-                }
-                result = new Error("no row");
-                return result;
-            });
+            const result = await pool.query(query);
+            return result.rows;
         } catch (error) {
             return new Error(error);
         }

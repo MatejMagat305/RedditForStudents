@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const {studentSQL} = require("./sqlTable");
 const DB = require("../DB_main/db");
 
@@ -36,10 +36,10 @@ function containAllImportantMembers(body, keys) {
 function preRegistration(keys){
     return async function(req, res) {
             try {
-                const salt = await bcrypt.genSalt();
                 const body = req.body;
                 console.log(body)
-                body.password = await bcrypt.hash(body.password, salt);
+                body.password =  crypto.createHash('sha256').update(body.password).digest('hex').toString();
+
                 if (containAllImportantMembers(body, keys)) {
                     if (await isIsicActive(body.isic_number)) {
                         let query = studentSQL.insert([body]).returning(studentSQL.id).toQuery();
