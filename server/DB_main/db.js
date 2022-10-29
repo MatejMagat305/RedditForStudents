@@ -1,4 +1,5 @@
-const Pool = require('pg').Pool; // existuje nieco ako Client - sluzi na tranzakcie
+const {rows} = require("pg/lib/defaults");
+const Pool = require('pg').Pool;
 let instance = null;
 
 const pool  = new Pool({
@@ -9,36 +10,28 @@ const pool  = new Pool({
     port     : 5432
 });
 
-// asi sa to takto neroby ale je to funkcne pokial bude file  moc zahlteni zmenime to 
 class DB {
     static conecction = 0;
 
     static getDbServiceInstance() {
         return instance ? instance : new DB();
     }
-    
 
     async get_json_query(query) {
         try {
-            return await new Promise(() => {
-                pool.query(query, (err, results) => {
-                    if (err) return(new Error(err.message));
-                    return results.rows;
-                })
-            })
-        } catch (error) {
-            return new Error(error);
-        }
-    }
-
-    async get_json_query_arguments(query, query_arguments) {
-        try {
-            return await new Promise(() => {
-                pool.query(query,query_arguments, (err, results) => {
-                    if (err) return(new Error(err.message));
-                    return results.rows;
-                })
-            })
+            return await pool.query(query, (err, results) => {
+                let result;
+                if (err!==undefined && err!==null) {
+                    result = new Error(err.toString());
+                    return result;
+                }
+                if (results!==null && results.rows!==undefined && results.rows!==null) {
+                    result = results.rows;
+                    return result;
+                }
+                result = new Error("no row");
+                return result;
+            });
         } catch (error) {
             return new Error(error);
         }

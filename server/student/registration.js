@@ -1,30 +1,20 @@
 const bcrypt = require("bcrypt");
 const {studentSQL} = require("./sqlTable");
 const DB = require("../DB_main/db");
-const jsdom = require("jsdom");
 
 
 const db = DB.getDbServiceInstance();
 
 async function isIsicActive(isic) {
     try {
-        await fetch('http://online.syts.sk/overenie/?' + new URLSearchParams({
-            jscp: 's',
-            thisSubmit: isic
+        return await fetch('http://online.syts.sk/overenie/?' + new URLSearchParams({
+            jscp: isic.toString(),
+            thisSubmit: "Vyhľadať"
         }))
-            .then(response => {
-                console.log(response)
-                return response.text();
-            })
-            .then(str => {
-                console.log(str);
-                const dom = new jsdom.JSDOM(str);
-                
-            })
-            .then(data => console.log(data));
-        return false;
+            .then(response => response.text())
+            .then(str =>  str.match( new RegExp('(je platná do)', 'g')))
+            .then(match => match!==null)
     } catch (err) {
-        // handle error
         console.error(err);
         return false;
     }
@@ -52,10 +42,14 @@ function preRegistration(keys){
                 body.password = await bcrypt.hash(body.password, salt);
                 if (containAllImportantMembers(body, keys)) {
                     if (await isIsicActive(body.isic_number)) {
-                        let query = studentSQL.insert([body]).toQuery();
+                        let query = studentSQL.insert([body]).returning(studentSQL.id).toQuery();
                         console.log(query);
-                        let result = db.get_json_query(query);
+                        const result = await db.get_json_query(query);
                         console.log(result);
+                        if (result instanceof Error) {
+                            res.status(500).send("no rows from db");
+                            return;
+                        }
                         res.status(200).send("student was registrate");
                         return;
                     }
