@@ -4,10 +4,8 @@ let studentSQL = sql.define({
     name: 'students',
     columns: [
         'id',
-        'first_name',
-        'last_name',
-        'isic_number',
         'nick_name',
+        'isic_number',
         'password'
     ]
 });

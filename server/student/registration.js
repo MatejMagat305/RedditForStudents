@@ -1,16 +1,17 @@
 const crypto = require("crypto");
 const {studentSQL} = require("./sqlTable");
 const DB = require("../DB_main/db");
-
+const fetch = require("cross-fetch");
 
 const db = DB.getDbServiceInstance();
 
 async function isIsicActive(isic) {
     try {
-        return await fetch('http://online.syts.sk/overenie/?' + new URLSearchParams({
-            jscp: isic.toString(),
-            thisSubmit: "Vyhľadať"
-        }))
+        
+        const url = new URL('http://online.syts.sk/overenie/')
+        const params = {jscp: isic, thisSubmit: "Vyhľadať"}
+        url.search = new URLSearchParams(params).toString();
+        return await fetch(url)
             .then(response => response.text())
             .then(str =>  str.match( new RegExp('(je platná do)', 'g')))
             .then(match => match!==null)
@@ -19,6 +20,7 @@ async function isIsicActive(isic) {
         return false;
     }
 }
+
 
 function containAllImportantMembers(body, keys) {
     for(let i=0; i<keys.length; i++){
@@ -37,11 +39,10 @@ function preRegistration(keys){
     return async function(req, res) {
             try {
                 const body = req.body;
-                console.log(body)
                 body.password =  crypto.createHash('sha256').update(body.password).digest('hex').toString();
 
                 if (containAllImportantMembers(body, keys)) {
-                    if (await isIsicActive(body.isic_number)) {
+                    if (await isIsicActive(body.isic)) {
                         let query = studentSQL.insert([body]).returning(studentSQL.id).toQuery();
                         console.log(query);
                         const result = await db.get_json_query(query);
