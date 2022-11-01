@@ -3,41 +3,47 @@ import {useState} from "react";
 import Button from "./components/Button";
 import Alert from './components/Alert';
 import useAlert from "./hooks/useAlrert";
+import {Navigate} from 'react-router-dom';
+import {studentLogin} from "./constants/urls";
 
-function Login(){
+function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
 
-    const[showAlert, setShowAlert,
+    const [showAlert, setShowAlert,
         alertType, setAlertType,
         alertTitle, setAlertTitle,
         alertContext, setAlertContext] = useAlert();
 
-    const LoginSend = () => {
-        const req = fetch("./student/login",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body: JSON.stringify({"nick_name":username,"password":password}) 
+    const loginSend = () => {
+        const req = fetch(studentLogin, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"nick_name": username, "password": password})
         });
-        req.then(res => res.json()).then(data => {
-            console.log(data)
-            setShowAlert(true);
-            setAlertType('success');
-            setAlertTitle("Data has been retrieved");
-            setAlertContext("data has been retrieved");
-        
+        req.then(res => {
+            if (res.ok) {
+                setLoggedIn(true);
+            } else {
+                res.json().then(data => showError(data.msg))
+            }
         }).catch(err => {
-            setShowAlert(true);
-            setAlertType('error');
-            setAlertTitle("Something went WRONG!");
-            setAlertContext(`${err}`);
-            console.log(`ERRROR ${err}   ${username} ${password}`)
+            showError(err)
         })
     }
-    
 
+    const showError = (errorMessage) => {
+        setShowAlert(true);
+        setAlertType('error');
+        setAlertTitle("Error");
+        setAlertContext(`${errorMessage}`)
+    }
+
+    if (loggedIn) {
+        return <Navigate to="/posts"/>
+    }
     return (
-        
         <div className={"border-4 border-blue-600 rounded-2xl w-1/3 min-w-max mx-auto mt-32 p-6"}>
             {showAlert && <Alert type={alertType} title={alertTitle} context={alertContext}/>}
             <div className={"flex-col space-y-5"}>
@@ -52,7 +58,7 @@ function Login(){
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                 />
-                <Button onClick={() => LoginSend() } type={'primary'} children={'Log In'}/>
+                <Button onClick={() => loginSend()} type={'primary'} children={'Log In'}/>
             </div>
         </div>
     )
