@@ -5,7 +5,7 @@ CREATE TABLE students (
                           last_name varchar,
                           isic_number varchar unique,
                           password varchar,
-                          nick_name varchar  
+                          nick_name varchar unique
 -- other atributes will appear later because we are agil  .........  
 );
 -- other tables will appear later because we are agil  .........

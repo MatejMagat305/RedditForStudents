@@ -24,6 +24,8 @@ function preLogin(){
             const hash = crypto.createHash('sha256').update(req.body.password).digest('hex').toString();
             if (row.password===hash) {
                 delete row["password"];
+                req.session.loggedin = true;
+                req.session.nick_name = row.nick_name;
                 res.status(200).json(row);
             } else {
                 res.status(500).send("password not matches");
