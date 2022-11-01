@@ -13,31 +13,27 @@ function Login(){
         alertTitle, setAlertTitle,
         alertContext, setAlertContext] = useAlert();
 
-    const LoginSend = () => {
+    const loginSend = () => {
         const req = fetch("./student/login",{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify({"nick_name":username,"password":password}) 
         });
-        req.then(res => res.json()).then(data => {
-            console.log(data)
-            setShowAlert(true);
-            setAlertType('success');
-            setAlertTitle("Data has been retrieved");
-            setAlertContext("data has been retrieved");
-        
-        }).catch(err => {
-            setShowAlert(true);
-            setAlertType('error');
-            setAlertTitle("Something went WRONG!");
-            setAlertContext(`${err}`);
-            console.log(`ERRROR ${err}   ${username} ${password}`)
+        req.then(res => {
+            if(!res.ok){
+                res.json().then(data => showError(data.error))
+            }
         })
     }
-    
+
+    const showError = (errorMessage) => {
+        setShowAlert(true);
+        setAlertType('error');
+        setAlertTitle("Error");
+        setAlertContext(`${errorMessage}`)
+    }
 
     return (
-        
         <div className={"border-4 border-blue-600 rounded-2xl w-1/3 min-w-max mx-auto mt-32 p-6"}>
             {showAlert && <Alert type={alertType} title={alertTitle} context={alertContext}/>}
             <div className={"flex-col space-y-5"}>
@@ -52,7 +48,7 @@ function Login(){
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                 />
-                <Button onClick={() => LoginSend() } type={'primary'} children={'Log In'}/>
+                <Button onClick={() => loginSend() } type={'primary'} children={'Log In'}/>
             </div>
         </div>
     )
