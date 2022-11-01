@@ -3,51 +3,56 @@ import {useState} from "react";
 import Button from "./components/Button";
 import Alert from './components/Alert';
 import useAlert from "./hooks/useAlrert";
+import {studentRegister} from "./constants/urls";
+import {Link} from "react-router-dom";
 
-function Signup(){
+function Signup() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [isic, setIsic] = useState("");
+    const [isicNumber, setIsicNumber] = useState("");
     const [password2, setPassword2] = useState("");
-    
+    const [signedUp, setSignedUp] = useState(false);
 
-    const[showAlert, setShowAlert,
+
+    const [showAlert, setShowAlert,
         alertType, setAlertType,
         alertTitle, setAlertTitle,
         alertContext, setAlertContext] = useAlert();
 
-    const SignupSend = () => {
-        
-        try{
-            console.log("som tuna ")
-            if(password !== password2){
-                throw Error("not matching passwords");
-            }
-            const req = fetch("./student/register",{
-                method:"POST",
-                headers:{"Content-Type":"application/json"},
-                body: JSON.stringify({"nick_name":username,"password":password,"isic":isic}) 
-                
-            });
-            console.log(req)
-            req.then(data => {
-                console.log(data.status)
-                setShowAlert(true);
-                setAlertType('success');
-                setAlertTitle("You profile has been registred");
-                setAlertContext("plase login nad ");
-            
-            }).catch(err => {
-                setShowAlert(true);
-                setAlertType('error');
-                setAlertTitle("Something went WRONG!");
-                setAlertContext(`${err} `);
-                console.log(`ERRROR ${err}`)
-            })
-        }catch(err){
-            console.log(err);
+    const signupSend = () => {
+        if (password !== password2) {
+            showError("passwords do not match");
+            return
         }
-        
+        const req = fetch(studentRegister, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"nick_name": username, "password": password, "isic_number": isicNumber})
+        });
+        req.then(res => {
+            if (res.ok) {
+                showSuccess("Registration successful")
+                setSignedUp(true);
+            } else {
+                res.json().then(data => showError(data.msg))
+            }
+        }).catch(err => {
+            showError(err)
+        })
+    }
+
+    const showSuccess = (successMessage) => {
+        setShowAlert(true);
+        setAlertType('success');
+        setAlertTitle("Awesome");
+        setAlertContext(`${successMessage}`)
+    }
+
+    const showError = (errorMessage) => {
+        setShowAlert(true);
+        setAlertType('error');
+        setAlertTitle("Error");
+        setAlertContext(`${errorMessage}`)
     }
 
     return (
@@ -71,12 +76,34 @@ function Signup(){
                             onChange={e => setPassword2(e.target.value)}
                 />
                 <InputField type={'text'}
-                            label={'isic'}
-                            value={isic}
-                            onChange={e => setIsic(e.target.value)}
+                            label={'isic number'}
+                            value={isicNumber}
+                            onChange={e => setIsicNumber(e.target.value)}
                 />
-                
-                <Button onClick={() => SignupSend() } type={'primary'} children={'Sign Up'}/>
+                {!signedUp &&
+                    <Button
+                        onClick={() => signupSend()}
+                        type={'primary'}
+                        children={'Sign Up'}
+                        disabled={signedUp}
+                    />}
+                {signedUp &&
+                <>
+                    <Link to="/">
+                        <Button
+                            type={'secondary'}
+                            children={'Back to main page'}
+                            className={"mt-3"}
+                        />
+                    </Link>
+                    <Link to="/login">
+                        <Button
+                            type={'primary'}
+                            children={'Log In'}
+                            className={"mt-3"}
+                        />
+                    </Link>
+                </>}
             </div>
         </div>
     )

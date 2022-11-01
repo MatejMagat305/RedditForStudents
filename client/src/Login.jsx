@@ -3,26 +3,33 @@ import {useState} from "react";
 import Button from "./components/Button";
 import Alert from './components/Alert';
 import useAlert from "./hooks/useAlrert";
+import {Navigate} from 'react-router-dom';
+import {studentLogin} from "./constants/urls";
 
-function Login(){
+function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
 
-    const[showAlert, setShowAlert,
+    const [showAlert, setShowAlert,
         alertType, setAlertType,
         alertTitle, setAlertTitle,
         alertContext, setAlertContext] = useAlert();
 
     const loginSend = () => {
-        const req = fetch("./student/login",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body: JSON.stringify({"nick_name":username,"password":password}) 
+        const req = fetch(studentLogin, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"nick_name": username, "password": password})
         });
         req.then(res => {
-            if(!res.ok){
-                res.json().then(data => showError(data.error))
+            if (res.ok) {
+                setLoggedIn(true);
+            } else {
+                res.json().then(data => showError(data.msg))
             }
+        }).catch(err => {
+            showError(err)
         })
     }
 
@@ -33,6 +40,9 @@ function Login(){
         setAlertContext(`${errorMessage}`)
     }
 
+    if (loggedIn) {
+        return <Navigate to="/posts"/>
+    }
     return (
         <div className={"border-4 border-blue-600 rounded-2xl w-1/3 min-w-max mx-auto mt-32 p-6"}>
             {showAlert && <Alert type={alertType} title={alertTitle} context={alertContext}/>}
@@ -48,7 +58,7 @@ function Login(){
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                 />
-                <Button onClick={() => loginSend() } type={'primary'} children={'Log In'}/>
+                <Button onClick={() => loginSend()} type={'primary'} children={'Log In'}/>
             </div>
         </div>
     )

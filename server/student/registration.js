@@ -7,7 +7,6 @@ const db = DB.getDbServiceInstance();
 
 async function isIsicActive(isic) {
     try {
-        
         const url = new URL('http://online.syts.sk/overenie/')
         const params = {jscp: isic, thisSubmit: "Vyhľadať"}
         url.search = new URLSearchParams(params).toString();
@@ -48,16 +47,15 @@ function preRegistration(keys){
                         const result = await db.get_json_query(query);
                         console.log(result);
                         if (result instanceof Error) {
-                            res.status(500).send("no rows from db");
+                            res.status(500).send({msg: "student already registered"});
                             return;
                         }
-                        res.status(200).send("student was registrate");
+                        res.status(200).send({msg: "registration successful"});
                         return;
                     }
-                    res.status(500).send("isic number is not active");
+                    res.status(500).send({msg: "ISIC card is not active"});
                 } else {
-                    res.status(500).send("it does not contain all important members " +
-                        "it must contains: " + keys.toString());
+                    res.status(500).send({msg: "Please fill out the registration form"});
                 }
             } catch (e) {
                 res.status(500).send(e.toString());

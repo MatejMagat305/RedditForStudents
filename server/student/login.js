@@ -17,7 +17,7 @@ function preLogin(){
                 return;
             }
             if (!rows.length) {
-                res.status(500).send({error: "wrong username or password"});
+                res.status(500).send({msg: "wrong username or password"});
                 return;
             }
             const row = rows[0];
@@ -28,10 +28,10 @@ function preLogin(){
                 req.session.nick_name = row.nick_name;
                 res.status(200).json(row);
             } else {
-                res.status(500).send({error: "wrong username or password"});
+                res.status(500).send({msg: "wrong username or password"});
             }
         } catch (e) {
-            res.status(500).send({error: e.toString()});
+            res.status(500).send({msg: e.toString()});
         }
     }
 }
