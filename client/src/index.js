@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Login from "./Login";
-import Signup from "./Signup";
+import Login from "./user/Login";
+import Signup from "./user/Signup";
 import Welcome from "./Welcome";
 import Posts from "./Posts";
 

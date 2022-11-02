@@ -1,10 +1,11 @@
-import InputField from "./components/InputField";
+import InputField from "../components/InputField";
 import {useState} from "react";
-import Button from "./components/Button";
-import Alert from './components/Alert';
-import useAlert from "./hooks/useAlrert";
+import Button from "../components/Button";
+import Alert from '../components/Alert';
+import useAlert from "../hooks/useAlrert";
 import {Navigate} from 'react-router-dom';
-import {studentLogin} from "./constants/urls";
+import {studentLogin} from "../constants/urls";
+import UserProfile from "./UserProfile";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -24,7 +25,8 @@ function Login() {
         });
         req.then(res => {
             if (res.ok) {
-                setLoggedIn(true);
+                setLoggedIn(true)
+                UserProfile.setUsername(username)
             } else {
                 res.json().then(data => showError(data.msg))
             }

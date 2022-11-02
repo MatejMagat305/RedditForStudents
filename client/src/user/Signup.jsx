@@ -1,9 +1,9 @@
-import InputField from "./components/InputField";
+import InputField from "../components/InputField";
 import {useState} from "react";
-import Button from "./components/Button";
-import Alert from './components/Alert';
-import useAlert from "./hooks/useAlrert";
-import {studentRegister} from "./constants/urls";
+import Button from "../components/Button";
+import Alert from '../components/Alert';
+import useAlert from "../hooks/useAlrert";
+import {studentRegister} from "../constants/urls";
 import {Link} from "react-router-dom";
 
 function Signup() {
