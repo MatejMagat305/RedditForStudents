@@ -1,4 +1,3 @@
-import './App.css';
 import Demo from './demo/demo_component';
 import D2 from './demo/demo2';
 import D3 from './demo/demo3post';
