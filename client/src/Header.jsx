@@ -5,8 +5,10 @@ import Button from "./components/Button";
 import Alert from "./components/Alert";
 import {Navigate} from "react-router-dom";
 import {useState} from "react";
+import {FaUserGraduate} from 'react-icons/fa';
+import {FaHandScissors} from 'react-icons/fa';
 
-function Header() {
+function Header({title, children}) {
 
     const [loggedOut, setLoggedOut] = useState(false);
 
@@ -45,17 +47,33 @@ function Header() {
         return <Navigate to="/"/>
     }
     return (
-        <header>
-            {UserProfile.getUsername()}
-            <Button
-                type={'secondary'}
-                children={'Logout'}
-                onClick={() => logoutSend()}
-            />
+        <>
             {showAlert &&
                 <Alert type={alertType} title={alertTitle} context={alertContext}/>
             }
-        </header>
+            <header className={'flex flex-row content-center bg-gray-200 p-3 shadow-xl'}>
+                <p className={'my-auto text-xl text-blue-800'}>
+                    {title}
+                </p>
+                <div className={'my-auto'}>
+                    {children}
+                </div>
+                <p
+                    className={'ml-auto my-auto mr-4 font-medium flex flex-row gap-2 text-xl'}>
+                    <span className={'text-gray-400'}>Student:</span>
+                    {UserProfile.getUsername()}
+                    <FaUserGraduate className={'my-auto'}/>
+                </p>
+                <div title={'Log Out'}>
+                    <Button
+                        type={'secondary'}
+                        children={<FaHandScissors/>}
+                        onClick={() => logoutSend()}
+                        className={'max-w-min'}
+                    />
+                </div>
+            </header>
+        </>
     )
 }
 
