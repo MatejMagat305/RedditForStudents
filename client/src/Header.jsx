@@ -3,20 +3,17 @@ import {studentLogout} from "./constants/urls";
 import UserProfile from "./user/UserProfile";
 import Button from "./components/Button";
 import Alert from "./components/Alert";
+import {Navigate} from "react-router-dom";
+import {useState} from "react";
 
 function Header() {
+
+    const [loggedOut, setLoggedOut] = useState(false);
 
     const [showAlert, setShowAlert,
         alertType, setAlertType,
         alertTitle, setAlertTitle,
         alertContext, setAlertContext] = useAlert();
-
-    const showSuccess = (successMessage) => {
-        setShowAlert(true);
-        setAlertType('success');
-        setAlertTitle("Awesome");
-        setAlertContext(`${successMessage}`)
-    }
 
     const showError = (errorMessage) => {
         setShowAlert(true);
@@ -34,8 +31,8 @@ function Header() {
 
         req.then(res => {
             if (res.ok) {
-                showSuccess("Logout successful")
                 UserProfile.setUsername('')
+                setLoggedOut(true)
             } else {
                 res.json().then(data => showError(data.msg))
             }
@@ -44,6 +41,9 @@ function Header() {
         })
     }
 
+    if (loggedOut) {
+        return <Navigate to="/"/>
+    }
     return (
         <header>
             {UserProfile.getUsername()}
