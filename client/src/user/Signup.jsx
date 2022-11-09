@@ -5,6 +5,10 @@ import Alert from '../components/Alert';
 import useAlert from "../hooks/useAlrert";
 import {studentRegister} from "../constants/urls";
 import {Link} from "react-router-dom";
+import {useClickCapureUpdate,useClickCapture} from "../context/ClickCapureCTX";
+import React from "react";
+
+
 
 function Signup() {
     const [username, setUsername] = useState("");
@@ -13,6 +17,12 @@ function Signup() {
     const [password2, setPassword2] = useState("");
     const [signedUp, setSignedUp] = useState(false);
 
+    const switchClick = useClickCapureUpdate();
+    const Click = useClickCapture();
+    
+    const isactive = {
+        display: Click === "register" ? "block" : "none"
+    }
 
     const [showAlert, setShowAlert,
         alertType, setAlertType,
@@ -54,9 +64,9 @@ function Signup() {
         setAlertTitle("Error");
         setAlertContext(`${errorMessage}`)
     }
-
+    
     return (
-        <div className={"border-4 border-blue-600 rounded-2xl w-1/3 min-w-max mx-auto mt-32 p-6"}>
+        <div className={"border-4 border-blue-600 rounded-2xl w-1/3 min-w-max mx-auto mt-8 p-6"} style={isactive} >
             {showAlert && <Alert type={alertType} title={alertTitle} context={alertContext}/>}
             <div className={"flex-col space-y-5"}>
                 <h2 className={"text-center text-3xl"}>Create an Account</h2>
@@ -88,22 +98,13 @@ function Signup() {
                         disabled={signedUp}
                     />}
                 {signedUp &&
-                <>
-                    <Link to="/">
-                        <Button
-                            type={'secondary'}
-                            children={'Back to main page'}
-                            className={"mt-3"}
-                        />
-                    </Link>
-                    <Link to="/login">
-                        <Button
-                            type={'primary'}
-                            children={'Log In'}
-                            className={"mt-3"}
-                        />
-                    </Link>
-                </>}
+                    <Button
+                        type={'primary'}
+                        children={'Log In'}
+                        className={"mt-3"}
+                        onClick={ () => switchClick("login")}
+                    />
+                }
             </div>
         </div>
     )
