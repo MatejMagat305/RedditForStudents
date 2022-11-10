@@ -7,15 +7,29 @@ import {Navigate} from 'react-router-dom';
 import {studentLogin} from "../constants/urls";
 import UserProfile from "./UserProfile";
 
+import {useClickCapureUpdate,useClickCapture} from "../context/ClickCapureCTX";
+
+
+
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
 
+
     const [showAlert, setShowAlert,
         alertType, setAlertType,
         alertTitle, setAlertTitle,
         alertContext, setAlertContext] = useAlert();
+    
+    const switchClick = useClickCapureUpdate();
+    const Click = useClickCapture();
+    
+    const isactive = {
+        display: Click === "login" ? "block" : "none"
+    }
+
+
 
     const loginSend = () => {
         const req = fetch(studentLogin, {
@@ -45,8 +59,10 @@ function Login() {
     if (loggedIn) {
         return <Navigate to="/posts"/>
     }
+    
     return (
-        <div className={"border-4 border-blue-600 rounded-2xl w-1/3 min-w-max mx-auto mt-32 p-6"}>
+        <div className={" flex-col border-4 border-blue-600 rounded-2xl mt-8 p-6  w-1/3 min-w-max  mx-auto "} style={isactive}>  
+            
             {showAlert && <Alert type={alertType} title={alertTitle} context={alertContext}/>}
             <div className={"flex-col space-y-5"}>
                 <h2 className={"text-center text-3xl"}>Login to Your Account</h2>
@@ -61,6 +77,7 @@ function Login() {
                             onChange={e => setPassword(e.target.value)}
                 />
                 <Button onClick={() => loginSend()} type={'primary'} children={'Log In'}/>
+                <Button onClick={() => switchClick("none")} type={'secondary'} children={'Back'}/>
             </div>
         </div>
     )
