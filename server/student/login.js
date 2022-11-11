@@ -26,6 +26,7 @@ function preLogin(){
                 delete row["password"];
                 req.session.loggedin = true;
                 req.session.nick_name = row.nick_name;
+                req.session.expire = new Date(Date.now() + hour);
                 res.status(200).json(row);
             } else {
                 res.status(500).send({msg: "wrong username or password"});
