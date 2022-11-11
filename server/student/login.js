@@ -1,15 +1,16 @@
 const crypto = require("crypto");
 const DB = require("../DB_main/db");
 const {studentSQL} = require("./sqlTable");
+const hour = require("../contants/date.js");
+
 const db = DB.getDbServiceInstance();
 function preLogin(){
     return  async function(req, res) {
         try {
-            const body = req.body;
             const query = await studentSQL
                 .select(studentSQL.star())
                 .from(studentSQL)
-                .where(studentSQL.nick_name.equals(body.nick_name))
+                .where(studentSQL.nick_name.equals(req.body.nick_name))
                 .toQuery();
             const rows = await db.get_json_query(query);
             if (rows instanceof Error) {
