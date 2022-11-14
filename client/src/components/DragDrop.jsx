@@ -6,8 +6,8 @@ import {FaTrash} from 'react-icons/fa';
 const fileTypes = ["JPG", "PNG", "GIF"];
 const maxFileSize = 1; //MB
 
-function DragDrop() {
-    const [file, setFile] = useState(null);
+function DragDrop({file, setFile}) {
+    //const [file, setFile] = useState(null);
 
     const handleChange = (file) => {
         setFile(file);

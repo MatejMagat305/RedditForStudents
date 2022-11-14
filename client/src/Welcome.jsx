@@ -27,7 +27,6 @@ function Welcome(){     //styling is not done yet (add background for example)
                 <LoginBtn></LoginBtn>
                 <Login></Login>
                 <Signup></Signup>
-                <DragDrop/>
             </div>
         </div>
         </ClickCapureParent>
