@@ -4,7 +4,8 @@ import img from "./img/Capture.png" // je tam aj svg ale nvedel som ho inmportov
 import Login from "./user/Login";
 import Signup from "./user/Signup";
 import LoginBtn from "./user/LoginBtn";
-import {ClickCapureParent} from "./context/ClickCapureCTX"; 
+import {ClickCapureParent} from "./context/ClickCapureCTX";
+import DragDrop from "./components/DragDrop";
 
 
 function Welcome(){     //styling is not done yet (add background for example)
@@ -26,7 +27,7 @@ function Welcome(){     //styling is not done yet (add background for example)
                 <LoginBtn></LoginBtn>
                 <Login></Login>
                 <Signup></Signup>
-                
+                <DragDrop/>
             </div>
         </div>
         </ClickCapureParent>
