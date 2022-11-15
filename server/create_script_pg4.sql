@@ -27,8 +27,8 @@ CREATE TABLE images (
 );
 select * from images;
 
-DROP TABLE IF EXISTS raitins CASCADE;
-CREATE TABLE raitings (
+DROP TABLE IF EXISTS ratings CASCADE;
+CREATE TABLE ratings (
                           id serial primary key,
                           category int check(category >=0 and category <=2),
                           post_id integer references posts,
@@ -37,4 +37,4 @@ CREATE TABLE raitings (
 	
 						  
 );
-select * from raitings;
+select * from ratings;
