@@ -1,0 +1,58 @@
+name: Running Tests
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+
+        env:
+          POSTGRES_PASSWORD: root
+          POSTGRES_USER: postgres
+          POSTGRES_DB: RedditForStudents
+
+        ports:
+          - 5432:5432
+
+    steps:
+      # run steps required in the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Create script
+        run: psql -h postgres -U postgres -f create_script_pg4.sql
+
+      - name: Run generate script
+        run: psql -h postgres -U postgres -f generate_script_pg4.sql
+      
+      - name: run js test
+        working-directory:  ./server/tests/js
+        run: npm run test
+        
+      - name: Run clear tables
+        run: psql -h postgres -U postgres -f clear.sql
+        
+      - name: post
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://ansible.io/api/v2/job_templates/84/launch/'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: '{"key_1": "value_1", "key_2": "value_2"}'
+        
